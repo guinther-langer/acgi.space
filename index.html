@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACGI 😈😱</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #4b0082, #000000);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3em;  /* Aumentei o tamanho do título */
+            margin-bottom: 20px;
+        }
+        .countdown {
+            display: flex;
+            gap: 15px;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .time-box span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .label {
+            font-size: 1em;
+            opacity: 0.8;
+        }
+
+        /* Imagem do gif de fogos (aumentei o tamanho) */
+        .firework {
+            position: absolute;
+            width: 300px;  /* Tamanho aumentado */
+            height: 300px; /* Tamanho aumentado */
+            background-color: transparent;
+            animation: explode 1.5s infinite ease-out;
+        }
+
+        .firework1 {
+            left: 5%;
+            top: 5%;
+        }
+
+        .firework2 {
+            right: 5%;
+            top: 5%;
+        }
+
+        .surprise {
+            position: relative;
+            bottom: -15%
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>ACGI IS COMING! 🎉</h1>
+    <div class="countdown">
+        <div class="time-box">
+            <span id="days">00</span>
+            <div class="label">Dias</div>
+        </div>
+        <div class="time-box">
+            <span id="hours">00</span>
+            <div class="label">Horas</div>
+        </div>
+        <div class="time-box">
+            <span id="minutes">00</span>
+            <div class="label">Minutos</div>
+        </div>
+        <div class="time-box">
+            <span id="seconds">00</span>
+            <div class="label">Segundos</div>
+        </div>
+    </div>
+
+    <!-- Fogos de artifício (com imagem GIF) -->
+    <div class="firework firework1">
+        <img src="firework.gif" alt="Fogos de Artifício" style="width:100%; height:100%;">
+    </div>
+    <div class="firework firework2">
+        <img src="firework.gif" alt="Fogos de Artifício" style="width:100%; height:100%;">
+    </div>
+    <div class="surprise">
+        <img src="surprise.jpeg" alt="Surprise" style="width:80%; height:80%;">
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const targetDate = new Date('July 20, ' + new Date().getFullYear() + ' 00:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+            
+            if (timeLeft < 0) {
+                document.body.innerHTML = '<h1>É HOJEEEEEEEEE! 🎉🎊</h1>';
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
