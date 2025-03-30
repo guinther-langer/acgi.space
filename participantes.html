@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participantes ACGI 😈</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #4b0082, #000000);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .participante {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            transition: transform 0.1s;
+        }
+        
+        .participante:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .participante.dragging {
+            cursor: grabbing;
+            z-index: 1000;
+            transition: none;
+        }
+        
+        .controles {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <h1>Participantes ACGI </h1>
+    
+    <div class="controles">
+        <button id="gravidade">Gravidade: OFF</button>
+        <button id="colisao">Colisão: ON</button>
+        <button id="resetar">Resetar Posições</button>
+    </div>
+    
+    <script>
+        // Lista de nomes
+        const nomes = [
+            "Allan", "Caio", "Christofer", "Iuri", "Gabriel Dahmer", 
+            "Guinther", "Kruger", "Victor Graff", "Wesley", "Wini", 
+            "Andrey", "Brendon", "Felipe Sathler (formigão)", 
+            "Eduardo Augusto", "Fernando (Jesus)"
+        ];
+        
+        // Variáveis globais
+        let participantes = [];
+        let gravidadeAtiva = false;
+        let colisaoAtiva = true;
+        let animacaoID;
+        
+        // Cores aleatórias para os participantes
+        const cores = [
+            '#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#33FFF5',
+            '#FFD700', '#FF6347', '#4682B4', '#9370DB', '#20B2AA',
+            '#DA70D6', '#32CD32', '#FA8072', '#87CEEB', '#FFA500'
+        ];
+        
+        // Função para criar elementos dos participantes
+        function criarParticipantes() {
+            // Limpar participantes existentes
+            document.querySelectorAll('.participante').forEach(el => el.remove());
+            participantes = [];
+            
+            // Criar novo elemento para cada nome
+            nomes.forEach((nome, index) => {
+                const elemento = document.createElement('div');
+                elemento.className = 'participante';
+                elemento.textContent = nome;
+                elemento.style.backgroundColor = cores[index % cores.length];
+                
+                // Posição inicial aleatória
+                const x = Math.random() * (window.innerWidth - 150);
+                const y = Math.random() * (window.innerHeight - 150);
+                
+                // Velocidade inicial aleatória
+                const vx = (Math.random() - 0.5) * 5;
+                const vy = (Math.random() - 0.5) * 5;
+                
+                elemento.style.left = `${x}px`;
+                elemento.style.top = `${y}px`;
+                
+                document.body.appendChild(elemento);
+                
+                // Adicionar à lista de participantes
+                participantes.push({
+                    elemento: elemento,
+                    x: x,
+                    y: y,
+                    vx: vx,
+                    vy: vy,
+                    largura: 0,
+                    altura: 0,
+                    arrastando: false
+                });
+                
+                // Adicionar eventos de arrastar
+                elemento.addEventListener('mousedown', iniciarArrasto);
+                elemento.addEventListener('touchstart', iniciarArrastoTouch);
+            });
+            
+            // Atualizar tamanhos após renderização
+            setTimeout(atualizarTamanhos, 100);
+        }
+        
+        // Atualizar largura e altura dos elementos
+        function atualizarTamanhos() {
+            participantes.forEach(p => {
+                p.largura = p.elemento.offsetWidth;
+                p.altura = p.elemento.offsetHeight;
+            });
+        }
+        
+        // Função de animação principal
+        function animar() {
+            participantes.forEach(p => {
+                if (p.arrastando) return;
+                
+                // Aplicar gravidade se estiver ativa
+                if (gravidadeAtiva) {
+                    p.vy += 0.2;
+                }
+                
+                // Atualizar posição
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                // Verificar colisão com as bordas
+                if (p.x < 0) {
+                    p.x = 0;
+                    p.vx = Math.abs(p.vx) * 0.8;
+                } else if (p.x + p.largura > window.innerWidth) {
+                    p.x = window.innerWidth - p.largura;
+                    p.vx = -Math.abs(p.vx) * 0.8;
+                }
+                
+                if (p.y < 0) {
+                    p.y = 0;
+                    p.vy = Math.abs(p.vy) * 0.8;
+                } else if (p.y + p.altura > window.innerHeight) {
+                    p.y = window.innerHeight - p.altura;
+                    p.vy = -Math.abs(p.vy) * 0.8;
+                    
+                    // Adicionar atrito quando toca no chão
+                    if (gravidadeAtiva) {
+                        p.vx *= 0.95;
+                    }
+                }
+                
+                // Aplicar atrito no ar (desacelerar gradualmente)
+                p.vx *= 0.995;
+                p.vy *= 0.995;
+                
+                // Atualizar posição do elemento
+                p.elemento.style.left = `${p.x}px`;
+                p.elemento.style.top = `${p.y}px`;
+            });
+            
+            // Verificar colisões entre participantes
+            if (colisaoAtiva) {
+                for (let i = 0; i < participantes.length; i++) {
+                    for (let j = i + 1; j < participantes.length; j++) {
+                        verificarColisao(participantes[i], participantes[j]);
+                    }
+                }
+            }
+            
+            animacaoID = requestAnimationFrame(animar);
+        }
+        
+        // Função para verificar colisão entre dois participantes
+        function verificarColisao(p1, p2) {
+            // Ignorar se algum dos participantes estiver sendo arrastado
+            if (p1.arrastando || p2.arrastando) return;
+            
+            // Verificar se há sobreposição
+            const dx = (p1.x + p1.largura/2) - (p2.x + p2.largura/2);
+            const dy = (p1.y + p1.altura/2) - (p2.y + p2.altura/2);
+            const distancia = Math.sqrt(dx*dx + dy*dy);
+            const minDistancia = (p1.largura + p2.largura) / 2;
+            
+            // Se há colisão
+            if (distancia < minDistancia) {
+                // Calcular a direção da colisão
+                const angulo = Math.atan2(dy, dx);
+                const sobreposicao = minDistancia - distancia;
+                
+                // Mover os participantes para evitar sobreposição
+                const fx = Math.cos(angulo) * sobreposicao * 0.5;
+                const fy = Math.sin(angulo) * sobreposicao * 0.5;
+                
+                p1.x += fx;
+                p1.y += fy;
+                p2.x -= fx;
+                p2.y -= fy;
+                
+                // Trocar velocidades (colisão elástica simplificada)
+                const vxTemp = p1.vx;
+                const vyTemp = p1.vy;
+                
+                p1.vx = p2.vx * 0.8;
+                p1.vy = p2.vy * 0.8;
+                p2.vx = vxTemp * 0.8;
+                p2.vy = vyTemp * 0.8;
+                
+                // Adicionar um pouco de aleatoriedade
+                p1.vx += (Math.random() - 0.5) * 1;
+                p1.vy += (Math.random() - 0.5) * 1;
+                p2.vx += (Math.random() - 0.5) * 1;
+                p2.vy += (Math.random() - 0.5) * 1;
+                
+                // Aplicar uma pequena rotação ao colidir
+                p1.elemento.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+                p2.elemento.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+                
+                // Resetar a rotação após um tempo
+                setTimeout(() => {
+                    p1.elemento.style.transform = '';
+                    p2.elemento.style.transform = '';
+                }, 300);
+            }
+        }
+        
+        // Funções para arrastar os participantes
+        function iniciarArrasto(e) {
+            const elemento = e.target;
+            const index = participantes.findIndex(p => p.elemento === elemento);
+            if (index !== -1) {
+                participantes[index].arrastando = true;
+                elemento.classList.add('dragging');
+                
+                // Posição inicial do mouse
+                const startX = e.clientX;
+                const startY = e.clientY;
+                const startLeft = participantes[index].x;
+                const startTop = participantes[index].y;
+                
+                // Funções para mover e finalizar o arrasto
+                function moverArrasto(e) {
+                    participantes[index].x = startLeft + (e.clientX - startX);
+                    participantes[index].y = startTop + (e.clientY - startY);
+                    elemento.style.left = `${participantes[index].x}px`;
+                    elemento.style.top = `${participantes[index].y}px`;
+                }
+                
+                function finalizarArrasto() {
+                    participantes[index].arrastando = false;
+                    elemento.classList.remove('dragging');
+                    
+                    // Adicionar velocidade baseada no movimento do mouse
+                    if (gravidadeAtiva) {
+                        participantes[index].vx = (Math.random() - 0.5) * 10;
+                        participantes[index].vy = (Math.random() - 0.5) * 5 - 10; // Impulso para cima
+                    }
+                    
+                    document.removeEventListener('mousemove', moverArrasto);
+                    document.removeEventListener('mouseup', finalizarArrasto);
+                }
+                
+                document.addEventListener('mousemove', moverArrasto);
+                document.addEventListener('mouseup', finalizarArrasto);
+            }
+            
+            e.preventDefault();
+        }
+        
+        // Versão touch das funções de arrasto
+        function iniciarArrastoTouch(e) {
+            const elemento = e.target;
+            const index = participantes.findIndex(p => p.elemento === elemento);
+            if (index !== -1) {
+                participantes[index].arrastando = true;
+                elemento.classList.add('dragging');
+                
+                // Posição inicial do toque
+                const touch = e.touches[0];
+                const startX = touch.clientX;
+                const startY = touch.clientY;
+                const startLeft = participantes[index].x;
+                const startTop = participantes[index].y;
+                
+                function moverArrastoTouch(e) {
+                    const touch = e.touches[0];
+                    participantes[index].x = startLeft + (touch.clientX - startX);
+                    participantes[index].y = startTop + (touch.clientY - startY);
+                    elemento.style.left = `${participantes[index].x}px`;
+                    elemento.style.top = `${participantes[index].y}px`;
+                }
+                
+                function finalizarArrastoTouch() {
+                    participantes[index].arrastando = false;
+                    elemento.classList.remove('dragging');
+                    
+                    // Adicionar velocidade baseada no movimento do toque
+                    if (gravidadeAtiva) {
+                        participantes[index].vx = (Math.random() - 0.5) * 10;
+                        participantes[index].vy = (Math.random() - 0.5) * 5 - 10; // Impulso para cima
+                    }
+                    
+                    elemento.removeEventListener('touchmove', moverArrastoTouch);
+                    elemento.removeEventListener('touchend', finalizarArrastoTouch);
+                }
+                
+                elemento.addEventListener('touchmove', moverArrastoTouch);
+                elemento.addEventListener('touchend', finalizarArrastoTouch);
+            }
+            
+            e.preventDefault();
+        }
+        
+        // Função para iniciar a animação
+        function iniciar() {
+            criarParticipantes();
+            
+            // Iniciar a animação
+            if (animacaoID) {
+                cancelAnimationFrame(animacaoID);
+            }
+            animacaoID = requestAnimationFrame(animar);
+            
+            // Configurar botões
+            document.getElementById('gravidade').addEventListener('click', toggleGravidade);
+            document.getElementById('colisao').addEventListener('click', toggleColisao);
+            document.getElementById('resetar').addEventListener('click', criarParticipantes);
+            
+            // Ajustar tamanhos quando a janela é redimensionada
+            window.addEventListener('resize', atualizarTamanhos);
+        }
+        
+        // Funções para os botões
+        function toggleGravidade() {
+            gravidadeAtiva = !gravidadeAtiva;
+            document.getElementById('gravidade').textContent = `Gravidade: ${gravidadeAtiva ? 'ON' : 'OFF'}`;
+        }
+        
+        function toggleColisao() {
+            colisaoAtiva = !colisaoAtiva;
+            document.getElementById('colisao').textContent = `Colisão: ${colisaoAtiva ? 'ON' : 'OFF'}`;
+        }
+        
+        // Iniciar quando a página carregar
+        window.addEventListener('load', iniciar);
+        
+        // Adicionar um pouco de caos quando clicar no título
+        document.querySelector('h1').addEventListener('click', function() {
+            participantes.forEach(p => {
+                p.vx += (Math.random() - 0.5) * 20;
+                p.vy += (Math.random() - 0.5) * 20;
+            });
+        });
+    </script>
+</body>
+</html>
