@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participantes ACGI 😈</title>
+    <link rel="icon" href="acgi.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #4b0082, #000000);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .participantes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .participante {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            width: 200px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .voltar {
+            display: inline-block;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .voltar:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Efeitos divertidos */
+        .rotacao:hover {
+            transform: rotate(360deg);
+            transition: transform 1s ease;
+        }
+        
+        .pulsacao:hover {
+            animation: pulse 1s infinite;
+        }
+        
+        .gravidade {
+            transition: transform 0.5s ease;
+        }
+        
+        .gravidade:hover {
+            animation: gravidade 1s forwards;
+        }
+        
+        .tremor:hover {
+            animation: tremor 0.1s infinite;
+        }
+        
+        .salto:hover {
+            animation: salto 0.5s infinite alternate;
+        }
+        
+        .desaparecer:hover {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .cores:hover {
+            animation: cores 2s infinite;
+        }
+        
+        .inverter:hover {
+            transform: scale(-1, 1);
+        }
+        
+        .expandir:hover {
+            transform: scale(1.2);
+        }
+        
+        .encolher:hover {
+            transform: scale(0.8);
+        }
+        
+        .girar3d:hover {
+            animation: girar3d 2s infinite;
+        }
+        
+        .deslizar:hover {
+            animation: deslizar 2s infinite alternate;
+        }
+        
+        .confete:hover::after {
+            content: '🎉';
+            position: absolute;
+            top: -20px;
+            left: 45%;
+            animation: confete 1s ease;
+        }
+        
+        .neblina:hover {
+            filter: blur(5px);
+        }
+        
+        /* Animações */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes gravidade {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(300px); }
+        }
+        
+        @keyframes tremor {
+            0% { transform: translate(1px, 1px); }
+            25% { transform: translate(-1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, -1px); }
+        }
+        
+        @keyframes salto {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+        
+        @keyframes cores {
+            0% { background: rgba(255, 0, 0, 0.3); }
+            25% { background: rgba(255, 255, 0, 0.3); }
+            50% { background: rgba(0, 255, 0, 0.3); }
+            75% { background: rgba(0, 0, 255, 0.3); }
+            100% { background: rgba(255, 0, 255, 0.3); }
+        }
+        
+        @keyframes girar3d {
+            0% { transform: perspective(500px) rotateY(0deg); }
+            100% { transform: perspective(500px) rotateY(360deg); }
+        }
+        
+        @keyframes deslizar {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(30px); }
+        }
+        
+        @keyframes confete {
+            0% { top: -20px; opacity: 1; }
+            100% { top: -50px; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Participantes ACGI 🎮</h1>
+    
+    <div class="participantes-container">
+        <div class="participante rotacao">Allan</div>
+        <div class="participante pulsacao">Caio</div>
+        <div class="participante tremor">Christofer</div>
+        <div class="participante salto">Iuri</div>
+        <div class="participante cores">Gabriel Dahmer</div>
+        <div class="participante expandir">Guinther</div>
+        <div class="participante deslizar">Kruger</div>
+        <div class="participante girar3d">Victor Graff</div>
+        <div class="participante desaparecer">Wesley</div>
+        <div class="participante confete">Wini</div>
+        <div class="participante gravidade">Andrey</div>
+        <div class="participante inverter">Brendon</div>
+        <div class="participante encolher">Felipe Sathler (formigão)</div>
+        <div class="participante neblina">Eduardo Augusto</div>
+        <div class="participante tremor">Fernando (Jesus)</div>
+    </div>
+    
+    <a href="index.html" class="voltar">Voltar para página principal</a>
+    
+    <script>
+        // Adiciona classes aleatoriamente aos participantes quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            const efeitos = ['rotacao', 'pulsacao', 'gravidade', 'tremor', 'salto', 
+                            'desaparecer', 'cores', 'inverter', 'expandir', 
+                            'encolher', 'girar3d', 'deslizar', 'confete', 'neblina'];
+            
+            const participantes = document.querySelectorAll('.participante');
+            
+            participantes.forEach(participante => {
+                // Remove todas as classes de efeito
+                efeitos.forEach(efeito => {
+                    participante.classList.remove(efeito);
+                });
+                
+                // Adiciona um efeito aleatório
+                const efeitoAleatorio = efeitos[Math.floor(Math.random() * efeitos.length)];
+                participante.classList.add(efeitoAleatorio);
+                
+                // Quando clica, muda o efeito
+                participante.addEventListener('click', function() {
+                    // Remove todas as classes de efeito
+                    efeitos.forEach(efeito => {
+                        this.classList.remove(efeito);
+                    });
+                    
+                    // Adiciona um novo efeito aleatório
+                    const novoEfeito = efeitos[Math.floor(Math.random() * efeitos.length)];
+                    this.classList.add(novoEfeito);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
