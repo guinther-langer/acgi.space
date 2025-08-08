@@ -218,6 +218,8 @@
         display: flex;
         gap: 20px;
         z-index: 2;
+        justify-content: center;
+        width: 100%;
       }
 
       .time-box {
@@ -328,6 +330,76 @@
           opacity: 0;
         }
       }
+
+      /* ======================================= */
+      /* --- ESTILOS PARA DISPOSITIVOS MÓVEIS --- */
+      /* ======================================= */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5em; /* Fonte menor para o título */
+          margin-bottom: 20px;
+        }
+
+        .countdown {
+          gap: 10px; /* Menos espaço entre as caixas */
+          transform: scale(0.9); /* Reduz o tamanho de todo o contador */
+        }
+
+        .time-box {
+          padding: 15px; /* Menor preenchimento interno */
+        }
+
+        .time-box span {
+          font-size: 2em; /* Fonte menor para os números */
+        }
+
+        .label {
+          font-size: 0.8em; /* Fonte menor para os rótulos */
+        }
+
+        .bottom-elements {
+          flex-direction: column; /* Empilha os elementos verticalmente */
+          gap: 30px; /* Espaço entre os elementos empilhados */
+          width: 90%;
+          bottom: 3%;
+          /* Remove o justify-content para centralizar com align-items */
+          justify-content: center;
+        }
+
+        .rotacao-horizontal img {
+          width: 120px; /* Imagem menor */
+          height: 120px;
+        }
+
+        .surprise img {
+          width: 200px; /* Imagem menor */
+        }
+
+        /* Oculta alguns efeitos para melhorar o desempenho em dispositivos mais fracos */
+        #smoke-container,
+        .firework-container {
+          display: none;
+        }
+      }
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2em;
+        }
+        .countdown {
+          transform: scale(0.75);
+        }
+        .bottom-elements {
+          gap: 20px;
+        }
+        .rotacao-horizontal img {
+          width: 100px;
+          height: 100px;
+        }
+
+        .surprise img {
+          width: 160px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -383,8 +455,10 @@
       function updateCountdown() {
         let now = new Date();
         let year = now.getFullYear();
+        // A data alvo é 20 de Julho
         let targetDate = new Date(`July 20, ${year} 00:00:00`);
 
+        // Se a data atual já passou da data alvo deste ano, define a data para o próximo ano
         if (now > targetDate) {
           targetDate = new Date(`July 20, ${year + 1} 00:00:00`);
         }
@@ -406,6 +480,7 @@
         document.getElementById("minutes").innerText = minutes;
         document.getElementById("seconds").innerText = seconds;
 
+        // Se o tempo acabar, exibe a mensagem de celebração
         if (timeLeft < 0) {
           document.body.innerHTML = "<h1>É HOJEEEEEEEEE! 🎉🎊</h1>";
         }
