@@ -1,138 +1,448 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ACGI 😈😱</title>
-    <link rel="icon" href="acgi.ico" type="image/x-icon">
+    <link rel="icon" href="acgi.ico" type="image/x-icon" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(to right, #4b0082, #000000);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            margin: 0;
-            overflow: hidden;
-        }
-        h1 {
-            font-size: 3em;  /* Aumentei o tamanho do título */
-            margin-bottom: 20px;
-        }
-        .countdown {
-            display: flex;
-            gap: 15px;
-        }
-        .time-box {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        .time-box span {
-            display: block;
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .label {
-            font-size: 1em;
-            opacity: 0.8;
-        }
+      :root {
+        --purple-glow: #9400d3;
+        --soft-glow: #da70d6;
+      }
 
-        /* Imagem do gif de fogos (aumentei o tamanho) */
-        .firework {
-            position: absolute;
-            width: 300px;  /* Tamanho aumentado */
-            height: 300px; /* Tamanho aumentado */
-            background-color: transparent;
-            animation: explode 1.5s infinite ease-out;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        background: #000;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        margin: 0;
+        overflow: hidden;
+        position: relative;
+        perspective: 1000px;
+      }
 
-        .firework1 {
-            left: 5%;
-            top: 5%;
-        }
+      /* --- EFEITOS DE FUNDO --- */
+      #stars-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
 
-        .firework2 {
-            right: 5%;
-            top: 5%;
-        }
+      .star {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        animation: twinkle 5s infinite;
+      }
 
-        .surprise {
-            position: relative;
-            bottom: -15%
+      @keyframes twinkle {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
         }
+        50% {
+          transform: scale(0.8);
+          opacity: 0.3;
+        }
+      }
 
-        @keyframes explode {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
+      /* --- FOGOS DE ARTIFÍCIO --- */
+      .firework-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .firework {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background-color: var(--soft-glow);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--purple-glow);
+        opacity: 0;
+        animation: launch 2s ease-out infinite;
+      }
+
+      .firework::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: inherit;
+        border-radius: 50%;
+        transform: scale(1);
+        opacity: 0;
+        animation: explode 0.8s ease-out 2s infinite;
+      }
+
+      @keyframes launch {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 1;
         }
+        100% {
+          transform: translateY(20vh) scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      @keyframes explode {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(40);
+          opacity: 0;
+        }
+      }
+
+      .firework1 {
+        left: 20%;
+        animation-delay: 0s;
+      }
+      .firework1::before {
+        animation-delay: 2s;
+      }
+
+      .firework2 {
+        left: 80%;
+        animation-delay: 1s;
+      }
+      .firework2::before {
+        animation-delay: 3s;
+      }
+
+      .firework3 {
+        left: 50%;
+        animation-delay: 2.5s;
+      }
+      .firework3::before {
+        animation-delay: 4.5s;
+      }
+
+      /* --- EFEITO DE FUMAÇA --- */
+      #smoke-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .smoke {
+        position: absolute;
+        bottom: 0;
+        width: 100px;
+        height: 120px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        filter: blur(25px);
+        opacity: 0;
+        animation: rise-and-fade 10s linear infinite;
+      }
+
+      @keyframes rise-and-fade {
+        0% {
+          transform: translateY(0) scale(0.5) translateX(0);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) scale(2) translateX(50px);
+          opacity: 0;
+        }
+      }
+
+      .smoke1 {
+        left: 5%;
+        animation-delay: 0s;
+      }
+      .smoke2 {
+        left: 20%;
+        animation-delay: 3s;
+      }
+      .smoke3 {
+        left: 85%;
+        animation-delay: 2s;
+        transform: scaleX(-1); /* Inverte para o outro lado */
+      }
+      .smoke4 {
+        left: 70%;
+        animation-delay: 6s;
+        transform: scaleX(-1);
+      }
+
+      /* --- TÍTULO COM EFEITO NEON --- */
+      h1 {
+        font-size: 4em;
+        margin-bottom: 30px;
+        z-index: 2;
+        text-transform: uppercase;
+        animation: pulsate-text 3s infinite ease-in-out;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--soft-glow),
+          0 0 30px var(--purple-glow), 0 0 40px var(--purple-glow);
+      }
+
+      @keyframes pulsate-text {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+      }
+
+      /* --- CONTADOR COM EFEITO NEON --- */
+      .countdown {
+        display: flex;
+        gap: 20px;
+        z-index: 2;
+      }
+
+      .time-box {
+        background: rgba(18, 18, 18, 0.5);
+        padding: 20px 25px;
+        border-radius: 15px;
+        text-align: center;
+        border: 1px solid var(--soft-glow);
+        box-shadow: 0 0 15px var(--purple-glow),
+          inset 0 0 10px rgba(218, 112, 214, 0.3);
+        animation: pulsate-border 4s infinite ease-in-out;
+        backdrop-filter: blur(5px);
+      }
+
+      @keyframes pulsate-border {
+        0%,
+        100% {
+          box-shadow: 0 0 15px var(--purple-glow),
+            inset 0 0 10px rgba(218, 112, 214, 0.3);
+          transform: translateY(0);
+        }
+        50% {
+          box-shadow: 0 0 25px var(--soft-glow),
+            inset 0 0 15px rgba(218, 112, 214, 0.5);
+          transform: translateY(-5px);
+        }
+      }
+
+      .time-box span {
+        display: block;
+        font-size: 2.5em;
+        font-weight: bold;
+      }
+
+      .label {
+        font-size: 1em;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* --- IMAGENS E EMOJIS --- */
+      .bottom-elements {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        bottom: 5%;
+        width: 80%;
+        z-index: 2;
+      }
+
+      .rotacao-horizontal img {
+        border-radius: 50%;
+        box-shadow: 0 0 20px var(--soft-glow);
+        width: 150px;
+        height: 150px;
+        animation: girar-horizontalmente 4s linear infinite;
+      }
+
+      @keyframes girar-horizontalmente {
+        from {
+          transform: rotateY(0deg);
+        }
+        to {
+          transform: rotateY(360deg);
+        }
+      }
+
+      .surprise img {
+        width: 250px;
+        height: auto;
+        animation: pulsate-surprise 3s infinite ease-in-out;
+        filter: drop-shadow(0 0 15px var(--purple-glow));
+      }
+
+      @keyframes pulsate-surprise {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      /* --- EMOJIS FLUTUANTES --- */
+      #floating-emojis {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .emoji {
+        position: absolute;
+        bottom: -10%;
+        font-size: 2em;
+        animation: float-up 10s linear infinite;
+      }
+
+      @keyframes float-up {
+        to {
+          transform: translateY(-120vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Elementos de Fundo -->
+    <div id="stars-container"></div>
+    <div class="firework-container">
+      <div class="firework firework1"></div>
+      <div class="firework firework2"></div>
+      <div class="firework firework3"></div>
+    </div>
+    <div id="smoke-container">
+      <div class="smoke smoke1"></div>
+      <div class="smoke smoke2"></div>
+      <div class="smoke smoke3"></div>
+      <div class="smoke smoke4"></div>
+    </div>
+    <div id="floating-emojis"></div>
+
+    <!-- Conteúdo Principal -->
     <h1>ACGI IS COMING! 🎉</h1>
     <div class="countdown">
-        <div class="time-box">
-            <span id="days">00</span>
-            <div class="label">Dias</div>
-        </div>
-        <div class="time-box">
-            <span id="hours">00</span>
-            <div class="label">Horas</div>
-        </div>
-        <div class="time-box">
-            <span id="minutes">00</span>
-            <div class="label">Minutos</div>
-        </div>
-        <div class="time-box">
-            <span id="seconds">00</span>
-            <div class="label">Segundos</div>
-        </div>
+      <div class="time-box">
+        <span id="days">00</span>
+        <div class="label">Dias</div>
+      </div>
+      <div class="time-box">
+        <span id="hours">00</span>
+        <div class="label">Horas</div>
+      </div>
+      <div class="time-box">
+        <span id="minutes">00</span>
+        <div class="label">Minutos</div>
+      </div>
+      <div class="time-box">
+        <span id="seconds">00</span>
+        <div class="label">Segundos</div>
+      </div>
     </div>
 
-    <!-- Fogos de artifício (com imagem GIF) -->
-    <div class="firework firework1">
-        <img src="firework.gif" alt="Fogos de Artifício" style="width:100%; height:100%;">
-    </div>
-    <div class="firework firework2">
-        <img src="firework.gif" alt="Fogos de Artifício" style="width:100%; height:100%;">
-    </div>
-    <div class="surprise">
-        <img src="surprise.jpeg" alt="Surprise" style="width:80%; height:80%;">
+    <!-- Elementos na parte inferior -->
+    <div class="bottom-elements">
+      <div class="rotacao-horizontal">
+        <img src="bitcoin.jpg" alt="Icone Rotacionando" />
+      </div>
+
+      <div class="surprise">
+        <img src="surprise.jpeg" alt="Surprise" />
+      </div>
     </div>
 
     <script>
-        function updateCountdown() {
-            const targetDate = new Date('July 20, ' + new Date().getFullYear() + ' 00:00:00').getTime();
-            const now = new Date().getTime();
-            const timeLeft = targetDate - now;
-            
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').innerText = days;
-            document.getElementById('hours').innerText = hours;
-            document.getElementById('minutes').innerText = minutes;
-            document.getElementById('seconds').innerText = seconds;
-            
-            if (timeLeft < 0) {
-                document.body.innerHTML = '<h1>É HOJEEEEEEEEE! 🎉🎊</h1>';
-            }
+      // --- LÓGICA DO CONTADOR ---
+      function updateCountdown() {
+        let now = new Date();
+        let year = now.getFullYear();
+        let targetDate = new Date(`July 20, ${year} 00:00:00`);
+
+        if (now > targetDate) {
+          targetDate = new Date(`July 20, ${year + 1} 00:00:00`);
         }
-        
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+
+        const timeLeft = targetDate.getTime() - now.getTime();
+        const f = (n) => (n < 10 ? "0" + n : n);
+
+        const days = f(Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
+        const hours = f(
+          Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        );
+        const minutes = f(
+          Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
+        );
+        const seconds = f(Math.floor((timeLeft % (1000 * 60)) / 1000));
+
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+        document.getElementById("seconds").innerText = seconds;
+
+        if (timeLeft < 0) {
+          document.body.innerHTML = "<h1>É HOJEEEEEEEEE! 🎉🎊</h1>";
+        }
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // --- GERADOR DE ESTRELAS ---
+      const starsContainer = document.getElementById("stars-container");
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        const size = Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 10}s`;
+        starsContainer.appendChild(star);
+      }
+
+      // --- GERADOR DE EMOJIS FLUTUANTES ---
+      const emojiContainer = document.getElementById("floating-emojis");
+      const emojiTypes = ["😈", "💎", "💰", "🚬", "🔊", "🍁", "🔥", "❄"];
+      setInterval(() => {
+        const emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.innerText =
+          emojiTypes[Math.floor(Math.random() * emojiTypes.length)];
+        emoji.style.left = `${Math.random() * 95}%`;
+        emoji.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        emojiContainer.appendChild(emoji);
+
+        setTimeout(() => {
+          emoji.remove();
+        }, 10000);
+      }, 500);
     </script>
-</body>
+  </body>
 </html>
