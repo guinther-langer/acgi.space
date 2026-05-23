@@ -19,15 +19,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         flex-direction: column;
         margin: 0;
-        overflow: hidden;
+        padding: 56px 0 64px;
+        box-sizing: border-box;
+        overflow-x: clip;
         position: relative;
         perspective: 1000px;
       }
 
-      /* --- EFEITOS DE FUNDO --- */
       #stars-container {
         position: absolute;
         top: 0;
@@ -56,7 +57,6 @@
         }
       }
 
-      /* --- FOGOS DE ARTIFÍCIO --- */
       .firework-container {
         position: absolute;
         width: 100%;
@@ -136,7 +136,6 @@
         animation-delay: 4.5s;
       }
 
-      /* --- EFEITO DE FUMAÇA --- */
       #smoke-container {
         position: absolute;
         width: 100%;
@@ -184,7 +183,7 @@
       .smoke3 {
         left: 85%;
         animation-delay: 2s;
-        transform: scaleX(-1); /* Inverte para o outro lado */
+        transform: scaleX(-1);
       }
       .smoke4 {
         left: 70%;
@@ -192,7 +191,6 @@
         transform: scaleX(-1);
       }
 
-      /* --- TÍTULO COM EFEITO NEON --- */
       h1 {
         font-size: 4em;
         margin-bottom: 30px;
@@ -213,7 +211,6 @@
         }
       }
 
-      /* --- CONTADOR COM EFEITO NEON --- */
       .countdown {
         display: flex;
         gap: 20px;
@@ -261,13 +258,12 @@
         letter-spacing: 1px;
       }
 
-      /* --- IMAGENS E EMOJIS --- */
       .bottom-elements {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
-        position: absolute;
-        bottom: 5%;
+        gap: 30px;
+        margin-top: 40px;
         width: 80%;
         z-index: 2;
       }
@@ -306,7 +302,6 @@
         }
       }
 
-      /* --- EMOJIS FLUTUANTES --- */
       #floating-emojis {
         position: absolute;
         top: 0;
@@ -331,51 +326,333 @@
         }
       }
 
-      /* ======================================= */
-      /* --- ESTILOS PARA DISPOSITIVOS MÓVEIS --- */
-      /* ======================================= */
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(
+          45deg,
+          #ff00de,
+          #00fff9,
+          #fffb00,
+          #ff0000,
+          #00ff00,
+          #9400d3
+        );
+        background-size: 600% 600%;
+        opacity: 0.12;
+        animation: disco-bg 6s ease infinite;
+        pointer-events: none;
+      }
+
+      @keyframes disco-bg {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .marquee {
+        position: fixed;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        font-family: "Comic Sans MS", "Comic Sans", cursive;
+        font-weight: bold;
+        font-size: 1.4em;
+        background: linear-gradient(90deg, #ff00de, #fffb00, #00fff9);
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        box-shadow: 0 0 20px #ff00de;
+        padding: 6px 0;
+      }
+      .marquee.top { top: 0; }
+      .marquee.bottom { bottom: 0; }
+      .marquee span {
+        display: inline-block;
+        padding-left: 100%;
+        animation: marquee-scroll 14s linear infinite;
+      }
+      .marquee.bottom span {
+        animation: marquee-scroll 18s linear infinite reverse;
+      }
+      @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+      }
+
+      .rainbow {
+        font-family: "Comic Sans MS", cursive;
+        background: linear-gradient(
+          90deg,
+          red, orange, yellow, green, blue, indigo, violet, red
+        );
+        background-size: 400% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: rainbow-move 3s linear infinite, blink 1s steps(2) infinite;
+        font-weight: bold;
+      }
+      @keyframes rainbow-move {
+        to { background-position: 400% 0; }
+      }
+      @keyframes blink {
+        50% { opacity: 0.25; }
+      }
+
+      .construcao {
+        z-index: 4;
+        font-family: "Comic Sans MS", cursive;
+        font-size: 1.1em;
+        color: #000;
+        background: repeating-linear-gradient(
+          45deg, #ffe600, #ffe600 20px, #000 20px, #000 40px
+        );
+        padding: 8px 14px;
+        border-radius: 8px;
+        margin-bottom: 18px;
+        display: inline-block;
+        box-shadow: 0 0 15px #ffe600;
+        animation: construcao-shake 0.3s infinite;
+      }
+      .construcao span {
+        background: #ffe600;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+      @keyframes construcao-shake {
+        0%, 100% { transform: rotate(-1.5deg); }
+        50% { transform: rotate(1.5deg); }
+      }
+
+      .visitas {
+        z-index: 4;
+        margin-top: 20px;
+        font-family: "Courier New", monospace;
+        font-size: 1.1em;
+        color: #00ff00;
+        background: #000;
+        border: 3px outset #00ff00;
+        padding: 6px 12px;
+        display: inline-block;
+      }
+      .visitas b {
+        background: #111;
+        color: #0f0;
+        padding: 2px 4px;
+        letter-spacing: 3px;
+        border: 1px solid #0f0;
+      }
+
+      .presencas-confirmadas {
+        z-index: 4;
+        margin-top: 26px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        font-family: "Comic Sans MS", cursive;
+        width: 100%;
+      }
+      .presencas-confirmadas .selo {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #000;
+        background: repeating-linear-gradient(
+          -45deg, #00ff00, #00ff00 14px, #ffe600 14px, #ffe600 28px
+        );
+        padding: 6px 16px;
+        border-radius: 8px;
+        text-shadow: 1px 1px 0 #fff;
+        box-shadow: 0 0 18px #00ff00;
+        animation: construcao-shake 0.3s infinite;
+      }
+      .carrossel {
+        position: relative;
+        width: 320px;
+        max-width: 90%;
+        overflow: hidden;
+        border-radius: 12px;
+      }
+      .carrossel-track {
+        display: flex;
+        transition: transform 0.6s ease;
+      }
+      .slide-presenca {
+        flex: 0 0 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        box-sizing: border-box;
+      }
+      .slide-presenca img {
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 6px ridge #ff00de;
+        box-shadow: 0 0 25px #ff00de, 0 0 45px var(--purple-glow);
+        animation: pulsate-surprise 2.5s infinite ease-in-out;
+      }
+      .slide-presenca .nome {
+        font-size: 1.8em;
+        margin: 0;
+      }
+      .slide-presenca .subtitulo {
+        font-size: 1em;
+        opacity: 0.85;
+        margin: 0;
+        padding: 0 8px;
+      }
+      .carrossel-seta {
+        position: absolute;
+        top: 78px;
+        background: #ff00de;
+        color: #fff;
+        border: 3px outset #ff00de;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        font-size: 1.3em;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 5;
+        text-shadow: 1px 1px 0 #000;
+        box-shadow: 0 0 12px #ff00de;
+      }
+      .carrossel-seta:hover { background: #00fff9; color: #000; }
+      .carrossel-seta.prev { left: 0; }
+      .carrossel-seta.next { right: 0; }
+      .carrossel-dots {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+      .carrossel-dots .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #555;
+        border: 1px solid #ff00de;
+        cursor: pointer;
+      }
+      .carrossel-dots .dot.ativo {
+        background: #00ff00;
+        box-shadow: 0 0 8px #00ff00;
+      }
+
+      .zoeira-botoes {
+        z-index: 4;
+        margin-top: 18px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .botao-zoeira {
+        font-family: "Comic Sans MS", cursive;
+        font-weight: bold;
+        font-size: 1em;
+        padding: 12px 18px;
+        border: 4px outset #ff00de;
+        background: #ff00de;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 6px;
+        text-shadow: 1px 1px 0 #000;
+        box-shadow: 0 0 12px #ff00de;
+        animation: botao-pulo 0.8s infinite alternate;
+      }
+      .botao-zoeira:hover {
+        background: #00fff9;
+        color: #000;
+      }
+      @keyframes botao-pulo {
+        to { transform: translateY(-5px) scale(1.05); }
+      }
+
+      .cursor-emoji {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9998;
+        font-size: 1.5em;
+        animation: cursor-fade 1s forwards;
+      }
+      @keyframes cursor-fade {
+        to { transform: translateY(20px) scale(0.2); opacity: 0; }
+      }
+
+      .popup-zoeira {
+        position: fixed;
+        z-index: 9999;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        color: #000;
+        border: 5px ridge #ff00de;
+        padding: 24px 30px;
+        font-family: "Comic Sans MS", cursive;
+        text-align: center;
+        box-shadow: 0 0 40px #000, 0 0 60px #ff00de;
+        max-width: 90%;
+      }
+      .popup-zoeira img { width: 120px; }
+      .popup-zoeira button {
+        margin-top: 14px;
+        padding: 8px 16px;
+        font-family: "Comic Sans MS", cursive;
+        font-weight: bold;
+        cursor: pointer;
+        background: #00ff00;
+        border: 3px outset #0a0;
+        border-radius: 4px;
+      }
+
       @media (max-width: 768px) {
         h1 {
-          font-size: 2.5em; /* Fonte menor para o título */
+          font-size: 2.5em;
           margin-bottom: 20px;
         }
 
         .countdown {
-          gap: 10px; /* Menos espaço entre as caixas */
-          transform: scale(0.9); /* Reduz o tamanho de todo o contador */
+          gap: 10px;
+          transform: scale(0.9);
         }
 
         .time-box {
-          padding: 15px; /* Menor preenchimento interno */
+          padding: 15px;
         }
 
         .time-box span {
-          font-size: 2em; /* Fonte menor para os números */
+          font-size: 2em;
         }
 
         .label {
-          font-size: 0.8em; /* Fonte menor para os rótulos */
+          font-size: 0.8em;
         }
 
         .bottom-elements {
-          flex-direction: column; /* Empilha os elementos verticalmente */
-          gap: 30px; /* Espaço entre os elementos empilhados */
+          flex-direction: column;
+          gap: 30px;
           width: 90%;
           bottom: 3%;
-          /* Remove o justify-content para centralizar com align-items */
           justify-content: center;
         }
 
         .rotacao-horizontal img {
-          width: 120px; /* Imagem menor */
+          width: 120px;
           height: 120px;
         }
 
         .surprise img {
-          width: 200px; /* Imagem menor */
+          width: 200px;
         }
 
-        /* Oculta alguns efeitos para melhorar o desempenho em dispositivos mais fracos */
         #smoke-container,
         .firework-container {
           display: none;
@@ -403,7 +680,15 @@
     </style>
   </head>
   <body>
-    <!-- Elementos de Fundo -->
+    <div class="marquee top">
+      <span
+        >🔥🔥🔥 MAS EU NEM GOSTO DE POLENTA 🔥🔥🔥 ACGI ESTÁ
+        CHEGANDO 😈😈😈 PREPARE-SE PARA DAR A BUNDA 💎💰 NÃO PISCA
+        SENÃO VOCÊ PERDE 👀 FOTO DO VAMPETA PELADO PESQUISAR ===
+        ACGI ESTA CHEGANDO === EVA E ADÃO? EVA E ADÃO? EVA E ADÃO? &nbsp;&nbsp;&nbsp;</span
+      >
+    </div>
+
     <div id="stars-container"></div>
     <div class="firework-container">
       <div class="firework firework1"></div>
@@ -418,8 +703,11 @@
     </div>
     <div id="floating-emojis"></div>
 
-    <!-- Conteúdo Principal -->
+    <div class="construcao">🚧 <span>O DONO DO SITE MORREU</span> 🚧</div>
     <h1>ACGI IS COMING! 🎉</h1>
+    <p class="rainbow" style="font-size: 1.6em; margin: 0 0 24px; z-index: 2">
+      ✨ O EVENTO MAIS AGUARDADO DA HISTÓRIA DE marehal candido rondo ✨
+    </p>
     <div class="countdown">
       <div class="time-box">
         <span id="days">00</span>
@@ -439,7 +727,53 @@
       </div>
     </div>
 
-    <!-- Elementos na parte inferior -->
+    <div class="presencas-confirmadas">
+      <div class="selo">✅ PRESENÇAS CONFIRMADAS ✅</div>
+      <div class="carrossel">
+        <button class="carrossel-seta prev" id="carrossel-prev">‹</button>
+        <div class="carrossel-track" id="carrossel-track">
+          <div class="slide-presenca">
+            <img src="leno.jpg" alt="Leno Brega" />
+            <p class="nome rainbow">👑 LENO BREGA 👑</p>
+            <p class="subtitulo">O REI DA POLENTA VAI MARCAR PRESENÇA 🔥💃</p>
+          </div>
+          <div class="slide-presenca">
+            <img src="diddy.jpg" alt="Diddy" />
+            <p class="nome rainbow">🎤 DIDDY 🎤</p>
+            <p class="subtitulo">VAI TRAZER O BABY OIL PRA FESTA 🍾🕺</p>
+          </div>
+          <div class="slide-presenca">
+            <img src="jef.jpg" alt="Jef" />
+            <p class="nome rainbow">🏝 JEF 🏝</p>
+            <p class="subtitulo">CONFIRMOU PRESENÇA NA ILHA 😬✈️</p>
+          </div>
+          <div class="slide-presenca">
+            <img src="trump.png" alt="Trump" />
+            <p class="nome rainbow">🇺🇸 TRUMP 🇺🇸</p>
+            <p class="subtitulo">VAI FAZER A FESTA GREAT AGAIN 🦅🔥</p>
+          </div>
+          <div class="slide-presenca">
+            <img src="bolsonaro.webp" alt="Bolsonaro" />
+            <p class="nome rainbow">🐍 BOLSONARO 🐍</p>
+            <p class="subtitulo">IMBROXÁVEL, CONFIRMADO NO ROLÊ 💉🏍️</p>
+          </div>
+        </div>
+        <button class="carrossel-seta next" id="carrossel-next">›</button>
+      </div>
+      <div class="carrossel-dots" id="carrossel-dots"></div>
+    </div>
+
+    <div class="visitas">
+      👁 VOCÊ É O VISITANTE Nº
+      <b id="contador-visitas">0000000</b>
+    </div>
+
+    <div class="zoeira-botoes">
+      <button class="botao-zoeira" id="btn-naoclique">CLIQUE AQUI</button>
+      <button class="botao-zoeira" id="btn-premio">🎁 GANHE UM IPHONE</button>
+      <button class="botao-zoeira" id="btn-turbo">⚡ ATIVAR MODO TURBO</button>
+    </div>
+
     <div class="bottom-elements">
       <div class="rotacao-horizontal">
         <img src="bitcoin.jpg" alt="Icone Rotacionando" />
@@ -450,15 +784,19 @@
       </div>
     </div>
 
+    <div class="marquee bottom">
+      <span
+        > MELHOR VISUALIZADO NO INTERNET EXPLORER 6
+        💾&nbsp;&nbsp;&nbsp;</span
+      >
+    </div>
+
     <script>
-      // --- LÓGICA DO CONTADOR ---
       function updateCountdown() {
         let now = new Date();
         let year = now.getFullYear();
-        // A data alvo é 20 de Julho
         let targetDate = new Date(`July 20, ${year} 00:00:00`);
 
-        // Se a data atual já passou da data alvo deste ano, define a data para o próximo ano
         if (now > targetDate) {
           targetDate = new Date(`July 20, ${year + 1} 00:00:00`);
         }
@@ -480,7 +818,6 @@
         document.getElementById("minutes").innerText = minutes;
         document.getElementById("seconds").innerText = seconds;
 
-        // Se o tempo acabar, exibe a mensagem de celebração
         if (timeLeft < 0) {
           document.body.innerHTML = "<h1>É HOJEEEEEEEEE! 🎉🎊</h1>";
         }
@@ -488,7 +825,6 @@
       setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      // --- GERADOR DE ESTRELAS ---
       const starsContainer = document.getElementById("stars-container");
       for (let i = 0; i < 100; i++) {
         const star = document.createElement("div");
@@ -502,9 +838,11 @@
         starsContainer.appendChild(star);
       }
 
-      // --- GERADOR DE EMOJIS FLUTUANTES ---
       const emojiContainer = document.getElementById("floating-emojis");
-      const emojiTypes = ["😈", "💎", "💰", "🚬", "🔊", "🍁", "🔥", "❄"];
+      const emojiTypes = [
+        "😈", "💎", "💰", "🚬", "🔊", "🍁", "🔥", "❄", "🤑", "🪙", "🎉",
+        "👀", "💸", "🚀", "💀", "👽", "🍀", "⚡", "🤯", "🦄",
+      ];
       setInterval(() => {
         const emoji = document.createElement("div");
         emoji.className = "emoji";
@@ -518,6 +856,131 @@
           emoji.remove();
         }, 10000);
       }, 500);
+
+      const contadorEl = document.getElementById("contador-visitas");
+      let visitas = 1337420 + Math.floor(Math.random() * 1000);
+      function pintaVisitas() {
+        contadorEl.innerText = String(visitas).padStart(7, "0");
+      }
+      pintaVisitas();
+      setInterval(() => {
+        visitas += Math.floor(Math.random() * 7) + 1;
+        pintaVisitas();
+      }, 1500);
+
+      const rastro = ["✨", "🔥", "💖", "⭐", "💫", "🤑"];
+      let ultimoRastro = 0;
+      document.addEventListener("mousemove", (e) => {
+        const agora = Date.now();
+        if (agora - ultimoRastro < 60) return;
+        ultimoRastro = agora;
+        const t = document.createElement("div");
+        t.className = "cursor-emoji";
+        t.innerText = rastro[Math.floor(Math.random() * rastro.length)];
+        t.style.left = e.clientX + "px";
+        t.style.top = e.clientY + "px";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1000);
+      });
+
+      function mostrarPopup(html) {
+        const overlay = document.createElement("div");
+        overlay.className = "popup-zoeira";
+        overlay.innerHTML =
+          html + '<br><button class="fechar-popup">blz 👍</button>';
+        document.body.appendChild(overlay);
+        overlay
+          .querySelector(".fechar-popup")
+          .addEventListener("click", () => overlay.remove());
+      }
+
+      const btnNao = document.getElementById("btn-naoclique");
+      btnNao.addEventListener("mouseenter", () => {
+        btnNao.style.position = "relative";
+        btnNao.style.left = Math.random() * 200 - 100 + "px";
+        btnNao.style.top = Math.random() * 80 - 40 + "px";
+      });
+      btnNao.addEventListener("click", () => {
+        mostrarPopup("<h2>8===D ~~</h2><p>🤣</p>");
+      });
+
+      document
+        .getElementById("btn-premio")
+        .addEventListener("click", () => {
+          mostrarPopup(
+            "<h2>🎉 PARABÉNS! 🎉</h2>" +
+              "<p>Você foi o visitante sortudo Nº <b>" +
+              visitas +
+              "</b>!</p>" +
+              "<p>Para resgatar seu iPhone 25 Pro Max, dê a BUNDA 3 vezes 🪙</p>" +
+              "<p style='font-size:0.7em;opacity:0.6'>* prêmio será entregue na festa</p>"
+          );
+        });
+
+      let turbo = false;
+      document.getElementById("btn-turbo").addEventListener("click", () => {
+        turbo = !turbo;
+        document.documentElement.style.setProperty(
+          "filter",
+          turbo ? "saturate(2.5) contrast(1.3)" : "none"
+        );
+        for (let i = 0; i < (turbo ? 40 : 0); i++) {
+          setTimeout(() => {
+            const emoji = document.createElement("div");
+            emoji.className = "emoji";
+            emoji.innerText =
+              emojiTypes[Math.floor(Math.random() * emojiTypes.length)];
+            emoji.style.left = `${Math.random() * 95}%`;
+            emoji.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            emojiContainer.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 4000);
+          }, i * 40);
+        }
+        mostrarPopup(
+          turbo
+            ? "<h2>⚡ MODO TURBO ATIVADO ⚡</h2>"
+            : "<h2>😌 Modo turbo desligado</h2>"
+        );
+      });
+
+      const carTrack = document.getElementById("carrossel-track");
+      const carSlides = carTrack.children.length;
+      const carDots = document.getElementById("carrossel-dots");
+      let carIndex = 0;
+
+      for (let i = 0; i < carSlides; i++) {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === 0 ? " ativo" : "");
+        dot.addEventListener("click", () => irPara(i));
+        carDots.appendChild(dot);
+      }
+
+      function pintaCarrossel() {
+        carTrack.style.transform = `translateX(-${carIndex * 100}%)`;
+        [...carDots.children].forEach((d, i) =>
+          d.classList.toggle("ativo", i === carIndex)
+        );
+      }
+      function irPara(i) {
+        carIndex = (i + carSlides) % carSlides;
+        pintaCarrossel();
+      }
+      document
+        .getElementById("carrossel-prev")
+        .addEventListener("click", () => irPara(carIndex - 1));
+      document
+        .getElementById("carrossel-next")
+        .addEventListener("click", () => irPara(carIndex + 1));
+
+      setInterval(() => irPara(carIndex + 1), 4000);
+
+      setTimeout(() => {
+        mostrarPopup(
+          "<h2>🚨 ESPERA AÍ! 🚨</h2>" +
+            "<p>Você eva e adão???</p>" +
+            "<p>🔥</p>"
+        );
+      }, 1500);
     </script>
   </body>
 </html>
